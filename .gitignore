@@ -1,0 +1,14 @@
+############### Mac .gitignore (simplified) from https://github.com/github/gitignore/blob/master/Global/OSX.gitignore
+
+.DS_Store
+
+############### Python .gitignore (simplified) from https://github.com/github/gitignore/blob/master/Python.gitignore
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+################
+
+
