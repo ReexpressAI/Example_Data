@@ -11,7 +11,7 @@ The [zip archive](/data/simple_qa.zip) contains a subset of Multiple Choice Ques
 
 To demonstrate combining the on-device model with a generative language model, we add the output [logits](https://huggingface.co/datasets/open-llm-leaderboard/details_mistralai__Mistral-7B-v0.1) of [Mistral 7B v0.1](https://arxiv.org/abs/2310.06825), "a 7-billion-parameter language model engineered for superior performance and efficiency", as attributes to each corresponding document in the input JSON lines file. For reference, the preprocessing script is [here](preprocess/qa_data_llm_benchmark.py), but that script is not particularly important for the purposes of this tutorial or otherwise; the data can just be downloaded directly from the zip archive above.
 
-*(The outputs across datasets are on rather different scales; for the purposes of this tutorial, we perform a simple, naive normalization. For reference, we also add 1-hot indicators of the predictions to show what we mean by turning your model's output into a categorial idicator: This can be useful if your LLM does not expose the output logits, which is currently the case with some cloud APIs.)*
+*(The outputs across datasets are on rather different scales; for the purposes of this tutorial, we perform a simple, naive normalization. For reference, we also add 1-hot indicators of the predictions to show what we mean by turning your model's output into a categorial indicator: This can be useful if your LLM does not expose the output logits, which is currently the case with some cloud APIs.)*
 
 
 **The takeaway:**
