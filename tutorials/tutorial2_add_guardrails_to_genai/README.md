@@ -2,7 +2,7 @@
 
 Example data for Reexpress one (macOS application) for the following: [Tutorial 2: Adding Uncertainty Estimates to a Generative Language Model](https://youtu.be/5HzD3NwKc-U).
 
-The [zip archive](https://github.com/ReexpressAI/Example_Data/data/simple_qa.zip) contains a subset of Multiple Choice Question Answering examples from the [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard). We re-split this eval data into training, calibration, and eval datasplits from the following datasets:
+The [zip archive](/data/simple_qa.zip) contains a subset of Multiple Choice Question Answering examples from the [Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard). We re-split this eval data into training, calibration, and eval datasplits from the following datasets:
 
 - [HellaSwag](https://arxiv.org/abs/1905.07830)
 - [AI2 Reasoning Challenge](https://arxiv.org/pdf/1803.05457.pdf)
