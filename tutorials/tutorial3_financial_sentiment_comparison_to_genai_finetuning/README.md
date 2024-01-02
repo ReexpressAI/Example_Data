@@ -1,4 +1,4 @@
-# Tutorial 3: Comparing Reexpress to fine-tuning a generative AI model
+# Tutorial 3: Comparing Reexpress to Fine-tuning a Generative AI Model for Classification
 
 With real-world enterprise and data science use cases, relying on prompts alone to update a generative model for a classification task is often not sufficient. It is typically recommended to fine-tune the large language model (LLM). For real-world use cases, we already have some amount of labeled data to evaluate the LLM and assign uncertainty estimates, so we can use some subset of such data to fine-tune the model.
 
@@ -24,7 +24,7 @@ python -u financial_sentiment.py \
 --output_train_jsonl_file ${OUTPUT}/"train.jsonl" \
 --output_calibration_jsonl_file ${OUTPUT}/"calibration.jsonl" \
 --output_test_jsonl_file ${OUTPUT}/"test.jsonl" \
---output_label_display_names_jsonl_file ${OUTPUT}/"sentiment_3class_labels.jsonl"`
+--output_label_display_names_jsonl_file ${OUTPUT}/"sentiment_3class_labels.jsonl"
 ```
 
 Next, just upload the document files (and optionally, the label display names file) to Reexpress and train. Feel free to experiment, but a recommended starting point is just to train for 200 epochs, otherwise using the default settings. To compare to the 7 billion parameter generative models, we recommend using the **Fast I** model, which has 3.2 billion parameters. 
