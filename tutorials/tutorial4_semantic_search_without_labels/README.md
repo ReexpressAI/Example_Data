@@ -125,7 +125,7 @@ Here are two examples from each of the books with the top (first) document resul
 
 ### Great Expectations
 
-Search text: "The impact of a memorable day":
+Search text: "We should consider the impact of a memorable day in influencing subsequent events.":
 
 ![Screenshot of Reexpress returning a semantic search from the book Great Expectations.](assets/Great-Expectations-example1.png)
 
