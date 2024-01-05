@@ -19,6 +19,10 @@ Tutorial 6: Combining Reexpress with your Bespoke Apple MLX Model
 Tutorial 7: Jump-starting with our Free Pre-trained .re1 Model and Data Files 
 (**Arriving soon**)
 
+Tutorial 8: Tutorial 8: Assessing Label and Data Quality with Reexpress: Creating Reliable Enterprise Models with Less Data, Faster 
+(**Arriving soon**)
+
+
 These tutorials will help you jump start you data analysis journey, which includes dense (vector) matching, semantic searches, auto visualizations, uncertainty quantification, and more...all without writing a single line of analysis code nor messing with tricky GPU drivers nor sending your data to an external server!
 
 The code in this repo is Apache 2.0 licensed.
