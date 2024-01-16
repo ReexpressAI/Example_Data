@@ -10,8 +10,7 @@ For "Tutorial 3: Comparing Reexpress to Fine-tuning a Generative AI Model for Cl
 
 For "Tutorial 4: Semantic Search without Labeled Documents" see the [Tutorial 4 Readme](tutorials/tutorial4_semantic_search_without_labels/README.md).
 
-Tutorial 5: Taming the arXiv Deluge with a Personalized Article Recommender
-(**Arriving soon**)
+For "Tutorial 5: Taming the arXiv Deluge with a Personalized Article Recommender" see the [Tutorial 5 Readme](tutorials/tutorial5_arxiv_recommender/README.md).
 
 Tutorial 6: Combining Reexpress with your Bespoke Apple MLX Model
 (**Arriving soon**)

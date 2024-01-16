@@ -1,0 +1,34 @@
+uncertainty quantification,cs.CL
+FEVER,cs.CL
+fact verification,cs.CL
+fact verification,cs.LG
+hallucination,cs.CL
+Factual Question Answering,cs.CL
+distribution free,cs.LG
+finite sample,cs.LG
+contrastive learning,cs.CL
+Retrieval Augmented,cs.CL
+Retrieval Augmented,cs.LG
+quantization,cs.CL
+quantization,cs.LG
+Quantized Transformers,cs.CL
+Quantized Transformers,cs.LG
+model distillation,cs.LG
+calibration,cs.CL
+calibration,cs.LG
+out of distribution detection,cs.CL
+out of distribution detection,cs.LG
+adversarial attacks,cs.LG
+adversarial attacks,cs.CL
+efficient training,cs.LG
+efficient training,cs.CL
+factual errors,cs.CL
+factual errors,cs.LG
+language model memorization,cs.CL
+verbatim copying,cs.CL
+memorization,cs.CL
+active learning,cs.CL
+federated learning,cs.CL
+continual learning,cs.CL
+label quality,cs.CL
+label quality,cs.LG
