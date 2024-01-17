@@ -1,6 +1,6 @@
 # Tutorial 5: Taming the arXiv Deluge with a Personalized Article Recommender
 
-Video overview: TBA
+Video overview: [Here](https://youtu.be/k1H3GcDdAfs)
 
 [Reexpress](https://re.express/) works remarkably well as a *personalized* arXiv article recommender/filter. This can save scholars a lot of time in practice, since the number of articles in the daily RSS feeds in AI related arXiv categories (e.g., cs.CL, which contains Natural Language Processing papers, and cs.LG for Machine Learning) has exploded in recent years. (In this tutorial, we use the cs.CL and cs.LG categories, but this works for any of the arXiv categories.)
 
@@ -10,17 +10,19 @@ To create a personalized recommendation classifier, we model the task as binary 
 
 It's quite easy to build your own classifier. We just need to download an initial modest group of arXiv abstracts to cold start the classifier, and then each day we can download and process the RSS feed, importing the result into the no-code Reexpress app. We provide simple scripts here to handle the arXiv downloads and formatting.
 
+**You won't need to write any new code yourself.**
+
 ## Step 1: Cold-start the classifier
 
 We'll need a modest number of articles to initially train the model. We include a simple script here that will download and format arXiv abstracts based on a set of arXiv identifiers (e.g., `cs/9301115` or `1503.04069`) and/or keyword topics + arXiv category (e.g., `uncertainty quantification,cs.CL`) that you provide in input files to the script. The articles retrieved from arXiv identifiers will be saved directly to the Training set (under the assumption that these are articles you have more carefully curated), and those from keywords will be split equally across the Training and Calibration sets. (If you only want to use the articles downloaded via arXiv identifiers, you'll need to manually split the generated Training file into a Training and Calibration set.) The articles retrieved from keywords will be noisy, but that's fine; you can easily refine the labels over time within Reexpress based on searching; the predictions; similarity and distance to other articles; etc. *That said, your initial inclination may be to download many, many thousands of articles via keywords. Resist this temptation, as you will find yourself doing a lot of post-hoc filtering; it will make retraining slower (which you'll want to do regularly, even daily, to update the model based on new articles from the RSS feed); and it's unnecessarily heavy on the arXiv API. Aim for, say, a max of 1,000-2,000 articles in each of Training and Calibration to start.*
 
 ### Setup and Python script requirements
 
-The Python scripts for formatting are very simple. (All of the serious heavy-lifting is done by the no-code Reexpress app.) Here we'll just briefly walk through exactly how to set this up and run in case you're more familiar with Swift or other languages, or haven't used the Mac Termainal application.
+The Python scripts for formatting are very simple. (All of the serious heavy-lifting is done by the no-code Reexpress app.) Here we'll walk through exactly how to set this up and run in case you're more familiar with Swift or other languages, or haven't used the Mac Terminal application. (We're being a bit vebose for those not familiar with the command line and/or Python, but don't let the length of this Readme dissuade you. --- It's literally just running one Python script to download an initial set of articles, and another script to download the daily RSS feed. **You won't need to write any new code yourself.**)
 
 First, setup a Conda environment. If you do not have Conda installed, see https://conda.io/projects/conda/en/latest/user-guide/getting-started.html (This is not strictly required, but just simplifies managing your Python packages. Once installed, you can just run the following code as-is, without affecting your other Python environments.)
 
-In the Mac Termainal application, create a Conda environment with Python 3.10.9, and install the dependencies [feedparser](https://feedparser.readthedocs.io/en/latest/) and [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/):
+In the Mac Terminal application, create a Conda environment with Python 3.10.9, and install the dependencies [feedparser](https://feedparser.readthedocs.io/en/latest/) and [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/):
 
 ```
 conda create -n "arxiv" python=3.10.9
@@ -79,6 +81,14 @@ When using `preprocess_arxiv_via_search_api.py`, articles downloaded via --arxiv
 ## Step 2: Import to Reexpress and train
 
 Next, create a new project in Reexpress, choosing binary classification. We ourselves use the Faster I (1.2 billion parameter) model for our arXiv recommender, but if you have an older Mac, the FastestDraft I (640 million parameter) model can also be used. The Fast I (3.2 billion parameter) model is mostly overkill for this task, so you might as well choose a smaller model to save time since you'll want to reguarly retrain.
+
+For the `Default prompt` choose custom and copy and paste the following into the text box: 
+
+```
+Please classify the relevance of the following article abstract, explaining your reasoning step by step.
+```
+
+The Python scripts automatically add this prompt to the JSON for each document, but having a default prompt can save you time when running semantic searches, since you can then just click **Default** to auto-fill the prompt.
 
 Once created, go to **Data**->**Add** and import the train_relevant.jsonl and train_not_relevant.jsonl files to the Training set, and the calibration_relevant.jsonl and calibration_not_relevant.jsonl files to the Calibration set.
 
