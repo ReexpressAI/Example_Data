@@ -12,8 +12,7 @@ For "Tutorial 4: Semantic Search without Labeled Documents" see the [Tutorial 4 
 
 For [Tutorial 5: Taming the arXiv Deluge with a Personalized Article Recommender (YouTube)](https://youtu.be/k1H3GcDdAfs) see the [Tutorial 5 Readme](tutorials/tutorial5_arxiv_recommender/README.md).
 
-Tutorial 6: Combining Reexpress with your Bespoke Apple MLX Model
-(**Arriving soon**)
+For [Tutorial 6: Combine Reexpress with Mixtral-8x7B via Apple's MLX framework (YouTube)](https://youtu.be/Brm_36YRG_8) see the [Tutorial 6 Readme](tutorials/tutorial6_mlx/README.md).
 
 Tutorial 7: Jump-starting with our Free Pre-trained .re1 Model and Data Files 
 (**Arriving soon**)
