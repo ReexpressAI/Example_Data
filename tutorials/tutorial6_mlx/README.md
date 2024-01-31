@@ -90,6 +90,7 @@ python mixtral_batch_classification.py \
 done
 ```
 
+**Timing**: More concretely, prediction over `eval_set.jsonl` took around 43 minutes (2582.2 seconds) for 488 documents (130,621 tokens), or roughly 50.6 tokens per second. That's actually pretty fast given the model! For context, the Reexpress **Fast I** model (3.2 billion parameters) runs inference at roughly 3,400 tokens per second (with a 3000 document support set) and the Reexpress **FastestDraft I** model (640 million parameter) runs at roughly 9,400 tokens per second. Those estimates include computationally intensive dense matching (for uncertainty) and feature importance steps. The take away is that it is quite reasonable to run both Mixtral and the Reexpress models together entirely on device for many tasks.
 
 ## 3. Create a project in Reexpress
 
@@ -138,7 +139,7 @@ Choose `Chat` mode for a standard chat interface. Use `Re-ask` mode to generate 
 
 ## Tips
 
-Mixtral-8x7B-Instruct-v0.1 is sufficiently fast on a Mac Studio with an M2 Ultra 76-core GPU and 128 GB of unified memory for small-scale datasets (on the order of several thousand documents, which is a scale that can be processed over night, depending on the document length). For larger datasets, consider running inference over the training set on a server and then move on-device for inference. Only a single pass over the data with the generative AI model is needed; subsequent training and re-training is possible just via the cached attributes in the JSON lines files. (A useful implication of this is that you can run the generative AI model over larger-scale generic or publicly available datasets in the cloud, and then you can add training instances from your IP-protected data by running the model over those documents on your Mac. Subsequent inference, and the model itself, can then stay on your, or your company's, Mac(s).)
+Mixtral-8x7B-Instruct-v0.1 is sufficiently fast on a Mac Studio with an M2 Ultra 76-core GPU and 128 GB of unified memory for small-scale datasets (on the order of several thousand documents, which is a scale that can be processed over night, depending on the document length). For larger datasets, consider running inference over the training set on a server (or split the files across multiple Macs, since inference is embarrassingly parallel across documents) and then move on-device for inference. Only a single pass over the data with the generative AI model is needed; subsequent training and re-training is possible just via the cached attributes in the JSON lines files. (A useful implication of this is that you can run the generative AI model over larger-scale generic or publicly available datasets in the cloud, and then you can add training instances from your IP-protected data by running the model over those documents on your Mac. Subsequent inference, and the model itself, can then stay on your, or your company's, Mac(s).)
 
 > [!NOTE]
 > In this example, we saw how to turn free-form generation into classification via a simple binary re-ask prompt+trailing instruction, and the underlying task itself was binary classification. This basic setup also applies for >=3-class classification. A typical approach would be to have the generative model predict the label, and then construct the re-ask trailing instruction based on that label.
