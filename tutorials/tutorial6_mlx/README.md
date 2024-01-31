@@ -90,7 +90,7 @@ python mixtral_batch_classification.py \
 done
 ```
 
-**Timing**: More concretely, prediction over `eval_set.jsonl` took around 43 minutes (2582.2 seconds) for 488 documents (130,621 tokens), or roughly 50.6 tokens per second. That's actually pretty fast given the model! For context, the Reexpress **Fast I** model (3.2 billion parameters) runs inference at roughly 3,400 tokens per second (with a 3000 document support set) and the Reexpress **FastestDraft I** model (640 million parameter) runs at roughly 9,400 tokens per second. Those estimates include computationally intensive dense matching (for uncertainty) and feature importance steps. The take away is that it is quite reasonable to run both Mixtral and the Reexpress models together entirely on device for many tasks.
+**Timing**: More concretely, prediction over `eval_set.jsonl` took around 43 minutes (2582.2 seconds) for 488 documents (130,621 tokens), or roughly 50.6 tokens per second. That's actually pretty fast given the model! For context, the Reexpress **Fast I** model (3.2 billion parameters) runs inference at roughly 3,400 tokens per second (with a 3000 document support set) and the Reexpress **FastestDraft I** model (640 million parameter) runs at roughly 9,400 tokens per second. Those estimates include computationally intensive dense matching (for uncertainty) and feature importance steps. The takeaway is that it is quite reasonable to run both Mixtral and the Reexpress models together entirely on device for many tasks.
 
 ## 3. Create a project in Reexpress
 
