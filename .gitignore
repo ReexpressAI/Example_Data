@@ -11,4 +11,13 @@ __pycache__/
 
 ################
 
+*~
+.*
+!.gitignore
 
+# Do not ignore the Streamlit config directory
+!.streamlit
+
+## ignore Mixtral weight directories
+Mixtral-8x7B-Instruct-v0.1/
+mlx_model_quantized/
