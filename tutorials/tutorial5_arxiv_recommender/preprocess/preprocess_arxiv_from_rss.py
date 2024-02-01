@@ -1,4 +1,6 @@
 """
+Version 2.0, updated with the new arXiv RSS format as of 2024-02-01.
+
 Download the daily arXiv RSS feed for a given arXiv category (e.g., cs.LG) and format the abstracts for input into
 Reexpress.
 
@@ -19,8 +21,6 @@ Most recently tested with:
 Python 3.10.9
 >>> feedparser.__version__
 '6.0.11'
->>> bs4.__version__
-'4.12.2'
 """
 
 import argparse
@@ -31,7 +31,6 @@ from os import path
 import time
 import urllib
 import feedparser
-from bs4 import BeautifulSoup
 
 # Constants
 kAPI_wait_time = 5
@@ -61,51 +60,52 @@ def get_json_list(rss_url, rss_filename, label_int, prompt):
     if len(feed.entries) > 0:
         arxiv_category = feed.feed.title.split()[0].strip()
         rss_last_updated = feed.feed.updated
+        rss_published = feed.feed.published
     for entry in feed.entries:
-        abstract_text = BeautifulSoup(entry.summary, 'html.parser').text.strip()
+        title = entry.title
+        # Here we retain the version (i.e., v[Int]) as the id, which means that abstract revisions will not be
+        # overwritten. (Note that it is easy to find all revisions for comparison/deletion. Simply run a keyword search using
+        # the base arXiv id in Reexpress.) Use arxiv_id = entry.link if you want to use the base arXiv id (and by
+        # extension, always overwrite).
+        arxiv_id = f"https://arxiv.org/abs/{entry.id[entry.id.rfind(':')+1:]}"
 
-        title = entry.title.strip()
-        right_bracket = title.rfind("]")
-        left_bracket = title.rfind("[")
-        title_no_category = title[0:left_bracket].strip()
-        category = title[left_bracket + 1:right_bracket]
-        if category == arxiv_category:
-            categories = f"({category})"
+        if entry.arxiv_announce_type in ["new", "cross"]:
+            original_published_date = rss_published
+            most_recent_update = "n/a"
         else:
-            categories = f"({category}, {arxiv_category})"
+            original_published_date = f"unavailable (updated article from RSS feed)"
+            most_recent_update = rss_published
 
-        arxiv_base_url = "https://arxiv.org/abs/"
-        arxiv_id_start = title_no_category.rfind(":")
-        arxiv_id_base = title_no_category[arxiv_id_start + 1:].strip()
-        arxiv_id = f"{arxiv_base_url}{arxiv_id_base}"
-        title_string = title_no_category[0:title_no_category.rfind(". (")].strip()
+        abstract_text = entry.summary
 
-        authors_raw = entry.authors[0]
-        authors_text = BeautifulSoup(authors_raw["name"], 'html.parser').text
-        authors_list = authors_text.split(",")
+        authors_list = [x.strip() for x in entry.author.split("\n")]
+        # As in our script to download from the search API, we only show up to 3 authors by name. Feel free to adjust.
         if len(authors_list) == 1:
             authors = f"by {authors_list[0].strip()}."
         elif len(authors_list) <= 3:
             first_authors = authors_list[0:3]
-            last_of_three_authors = first_authors.pop()
+            last_author = first_authors.pop()
             if len(authors_list) == 2:  # no comma
                 authors = "by " + ", ".join(
-                    [x.strip() for x in first_authors]) + " and " + f"{last_of_three_authors.strip()}."
+                    [x.strip() for x in first_authors]) + " and " + f"{last_author.strip()}."
             else:
                 authors = "by " + ", ".join(
-                    [x.strip() for x in first_authors]) + ", and " + f"{last_of_three_authors.strip()}."
+                    [x.strip() for x in first_authors]) + ", and " + f"{last_author.strip()}."
         else:
             first_authors = authors_list[0:3]
             authors = "by " + ", ".join([x.strip() for x in first_authors]) + ", et al."
 
-        document = f"{filter_newlines(title_string)} {filter_newlines(authors)} {categories}\n\nAbstract: {filter_newlines(abstract_text)}"
+        # only the first 2 categories are retained
+        categories = ", ".join([x["term"] for x in entry.tags[0:2]])
+        categories = f"({categories})"
+
+        document = f"{filter_newlines(title)} {filter_newlines(authors)} {categories}\n\nAbstract: {filter_newlines(abstract_text)}"
 
         json_obj = {"id": arxiv_id, "label": label_int,
                     "document": document.strip(),
                     "prompt": prompt.strip(),
-                    "group": f"Last updated: {rss_last_updated}",
-                    "info": f"Originally published: unavailable (from RSS feed)"}
-
+                    "group": f"Last updated: {most_recent_update}",
+                    "info": f"Originally published: {original_published_date}"}
         json_list.append(json_obj)
 
     if len(json_list) == 0:
@@ -168,12 +168,11 @@ def main():
             exit()
         # an initial pause just in case this script is used in a loop in a bash script
         time.sleep(kAPI_wait_time)
-        rss_url = f"https://export.arxiv.org/rss/{options.arxiv_category.strip()}"
+        rss_url = f"https://rss.arxiv.org/rss/{options.arxiv_category.strip()}"
         rss_filename = None
     try:
         parsed_arxiv_category, rss_date, json_list = get_json_list(rss_url, rss_filename, options.label_int,
                                                                    options.prompt)
-
         save_json_lines(path.join(options.output_directory,
                                   f"{parsed_arxiv_category}_{rss_date}_{str(uuid.uuid4())}.jsonl"),
                         json_list)
