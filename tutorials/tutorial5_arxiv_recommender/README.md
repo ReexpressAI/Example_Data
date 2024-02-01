@@ -12,6 +12,9 @@ It's quite easy to build your own classifier. We just need to download an initia
 
 **You won't need to write any new code yourself.**
 
+> [!NOTE]
+> This has been updated to work with the [new arXiv RSS format introduced January 31, 2024](https://blog.arxiv.org/2024/01/31/attention-arxiv-users-re-implemented-rss/).
+
 ## Step 1: Cold-start the classifier
 
 We'll need a modest number of articles to initially train the model. We include a simple script here that will download and format arXiv abstracts based on a set of arXiv identifiers (e.g., `cs/9301115` or `1503.04069`) and/or keyword topics + arXiv category (e.g., `uncertainty quantification,cs.CL`) that you provide in input files to the script. The articles retrieved from arXiv identifiers will be saved directly to the Training set (under the assumption that these are articles you have more carefully curated), and those from keywords will be split equally across the Training and Calibration sets. (If you only want to use the articles downloaded via arXiv identifiers, you'll need to manually split the generated Training file into a Training and Calibration set.) The articles retrieved from keywords will be noisy, but that's fine; you can easily refine the labels over time within Reexpress based on searching; the predictions; similarity and distance to other articles; etc. *That said, your initial inclination may be to download many, many thousands of articles via keywords. Resist this temptation, as you will find yourself doing a lot of post-hoc filtering; it will make retraining slower (which you'll want to do regularly, even daily, to update the model based on new articles from the RSS feed); and it's unnecessarily heavy on the arXiv API. Aim for, say, a max of 1,000-2,000 articles in each of Training and Calibration to start.*
@@ -22,16 +25,15 @@ The Python scripts for formatting are very simple. (All of the serious heavy-lif
 
 First, setup a Conda environment. If you do not have Conda installed, see https://conda.io/projects/conda/en/latest/user-guide/getting-started.html (This is not strictly required, but just simplifies managing your Python packages. Once installed, you can just run the following code as-is, without affecting your other Python environments.)
 
-In the Mac Terminal application, create a Conda environment with Python 3.10.9, and install the dependencies [feedparser](https://feedparser.readthedocs.io/en/latest/) and [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/):
+In the Mac Terminal application, create a Conda environment with Python 3.10.9 and install the dependency [feedparser](https://feedparser.readthedocs.io/en/latest/):
 
 ```
 conda create -n "arxiv" python=3.10.9
 conda activate arxiv
 pip install feedparser
-pip install beautifulsoup4
 ```
 
-(For reference, we have most recently tested these scripts with feedparser version 6.0.11 and beautifulsoup4 version 4.12.2.)
+(For reference, we have most recently tested these scripts with feedparser version 6.0.11.)
 
 ### Run the script
 
@@ -73,7 +75,7 @@ python -u preprocess_arxiv_via_search_api.py \
 
 In Reexpress, the document id defines the uniqueness of a document. Re-uploading a document with the same id will delete any data previously associated with that document and will automatically transfer it to the datasplit chosen when re-uploading. 
 
-When downloading articles from the RSS feed (using `preprocess_arxiv_from_rss.py`), the JSON id is set as the URL to the abstract, e.g., `https://arxiv.org/abs/1503.04069`.
+When downloading articles from the RSS feed (using `preprocess_arxiv_from_rss.py`), the JSON id is set as the URL to the abstract, e.g., `https://arxiv.org/abs/1503.04069v2`.
 
 When using `preprocess_arxiv_via_search_api.py`, articles downloaded via --arxiv_id_file are assigned an id with the following format: `[URL] label[LABEL_INT] [UUID]`. Those downloaded via --arxiv_topics_file are assigned an id with the following format: `[URL] label[LABEL_INT]`. We add the `[UUID]` to the former as we assume these are articles you have more carefully curated and don't want them to be auto reassigned to another datasplit if a duplicate is downloaded via a topic keyword. We take this more conservative approach (which could create duplicates) because it's trivially easy to remove duplicates in training (including among those documents already in training) by going to **Explore**->**Select**->**Constraints** and setting Lowest and Highest allowed Distance to 0.0. (This distance is the L2 distance to the Training set.) If any duplicates show up, you can delete them individually (see Delete at the bottom of the document view in Explore) or click **Details**->**Batch** to run a batch delete.
 
@@ -147,7 +149,7 @@ Save this application to your hard drive. Run it at least once (by double clicki
 
 Open Calendar and create a New Event. Click Alert->Custom and then choose 'Open file', select the automator app file (in the second drop-down where it will say Calendar by default), and choose 'At time of event'. You can then choose a time for it to repeat every day when there is a new RSS feed. Note that when it first runs, you may get a popup to confirm access to the output directory you specified above.
 
-When does the RSS become available? See [Availability of submissions](https://info.arxiv.org/help/availability.html) and adjust accordingly for your time zone. On days without announcements, the `preprocess_arxiv_from_rss.py` script will exit without saving a .jsonl file.
+When does the RSS become available? See [Availability of submissions](https://info.arxiv.org/help/availability.html) and [RSS news feeds](https://info.arxiv.org/help/rss.html) and adjust accordingly for your time zone. On days without announcements, the `preprocess_arxiv_from_rss.py` script will exit without saving a .jsonl file.
 
 ## Tips
 

@@ -135,7 +135,7 @@ This will make the UI accessible from localhost and a corresponding URL on your 
 Choose `Chat` mode for a standard chat interface. Use `Re-ask` mode to generate Reexpression attributes which you can then copy-and-paste into Reexpress. (Remember that if you train the model with 'attributes' from another model/source, you will want to include such attributes at test time, as well.) See the YouTube video above for an example.
 
 > [!TIP]
-> To stop streamlit, got to the Terminal and type `control-c`.
+> To stop streamlit, go to the Terminal and type `control-c`.
 
 ## Tips
 
