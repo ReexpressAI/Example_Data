@@ -149,7 +149,7 @@ Save this application to your hard drive. Run it at least once (by double clicki
 
 Open Calendar and create a New Event. Click Alert->Custom and then choose 'Open file', select the automator app file (in the second drop-down where it will say Calendar by default), and choose 'At time of event'. You can then choose a time for it to repeat every day when there is a new RSS feed. Note that when it first runs, you may get a popup to confirm access to the output directory you specified above.
 
-When does the RSS become available? See [Availability of submissions](https://info.arxiv.org/help/availability.html) and [RSS news feeds](https://info.arxiv.org/help/rss.html) and adjust accordingly for your time zone. On days without announcements, the `preprocess_arxiv_from_rss.py` script will exit without saving a .jsonl file.
+When does the RSS become available? See [Availability of submissions](https://info.arxiv.org/help/availability.html) and [RSS news feeds](https://info.arxiv.org/help/rss.html) and adjust accordingly for your time zone. On days without announcements, the `preprocess_arxiv_from_rss.py` script will exit without saving a .jsonl file. For the Eastern Time Zone in the US, for example, the RSS feed will be typically be empty during the day on Saturday and Sunday since there are typically no newly announced papers. The arXiv RSS feed status is available at [https://rss.arxiv.org/feed/status](https://rss.arxiv.org/feed/status).
 
 ## Tips
 
