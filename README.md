@@ -14,8 +14,7 @@ For [Tutorial 5: Taming the arXiv Deluge with a Personalized Article Recommender
 
 For [Tutorial 6: Combine Reexpress with Mixtral-8x7B via Apple's MLX framework (YouTube)](https://youtu.be/Brm_36YRG_8) see the [Tutorial 6 Readme](tutorials/tutorial6_mlx/README.md).
 
-Tutorial 7: Jump-starting with our Free Pre-trained .re1 Model and Data Files 
-(**Arriving soon**)
+For [Tutorial 7: Reexpress is your reliable co-pilot for enterprise and professional AI-augmented data analysis (YouTube)](https://youtu.be/ipSZf3h8vLY) see the [Tutorial 7 Readme](tutorials/tutorial7_factcheck/README.md).
 
 Tutorial 8: Tutorial 8: Assessing Label and Data Quality with Reexpress: Creating Reliable Enterprise Models with Less Data, Faster 
 (**Arriving soon**)
@@ -24,3 +23,17 @@ Tutorial 8: Tutorial 8: Assessing Label and Data Quality with Reexpress: Creatin
 These tutorials will help you jump start you data analysis journey, which includes dense (vector) matching, semantic searches, auto visualizations, uncertainty quantification, and more...all without writing a single line of analysis code nor messing with tricky GPU drivers nor sending your data to an external server!
 
 The code in this repo is Apache 2.0 licensed.
+
+## Citing Reexpress
+
+If you use Reexpress in your academic research, feel free to use the following citation. More importantly, we'd love to hear from you and feature your work!
+
+```
+@software{reexpress2023,
+  author = {Reexpress AI},
+  title = {{Reexpress}: Introspectable, Updatable, and Uncertainty-aware AI via Similarity-Distance-Magnitude data partitions and calibration},
+  url = {https://re.express},
+  version = {1.0},
+  year = {2023},
+}
+```
