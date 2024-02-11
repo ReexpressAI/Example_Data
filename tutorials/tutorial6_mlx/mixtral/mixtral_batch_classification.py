@@ -15,6 +15,7 @@ from mlx.utils import tree_map, tree_unflatten
 from sentencepiece import SentencePieceProcessor
 
 import codecs
+import time
 
 @dataclass
 class ModelArgs:
@@ -337,7 +338,8 @@ def generate(prompt: mx.array, model: Mixtral):
             yes_logit, no_logit
 
 
-def get_document_attributes(model, document_string="", prompt_text="", trailing_instruction="", full_input_tokenized=None):
+def get_document_attributes(model, document_string="", prompt_text="", trailing_instruction="",
+                            full_input_tokenized=None, return_input_length=False):
     if full_input_tokenized is None:
         if prompt_text == "":
             print(f"The prompt is blank. Exiting.")
@@ -385,9 +387,32 @@ def get_document_attributes(model, document_string="", prompt_text="", trailing_
 
     # Handle Infinity/-Infinity with a simple clamp. NaN also becomes -2 for the purposes here. This, as with the
     # other renorm constants, should be modified for other models and use cases. (Here, we are assuming a max length
-    # of around 5000 characters.)
+    # of around 5000 characters. For longer documents, the overflow/underflow may need to be handled differently.)
     document_attributes = mx.clip(mx.concatenate(document_attributes, 0).astype(mx.float32), -2.0, 2.0).tolist()
+    if return_input_length:
+        return document_attributes, full_input_tokenized.shape[0]
     return document_attributes
+
+
+def construct_minimal_json_object(id_string, label, document, attributes, prompt="", info="", group=""):
+    """
+    Optional fields that are empty strings are dropped. In this case, attributes are expected to be present for every
+    document; however, an empty list is not included in the JSON.
+    """
+    # required properties
+    json_obj = {"id": id_string, "label": label,
+                "document": document}
+    # optional properties
+    if len(attributes) > 0:
+        json_obj["attributes"] = attributes
+    if len(prompt) > 0:
+        json_obj["prompt"] = prompt
+    if len(info) > 0:
+        json_obj["info"] = info
+    if len(group) > 0:
+        json_obj["group"] = group
+
+    return json_obj
 
 
 def save_by_appending_json_lines(filename_with_path, json_list):
@@ -453,6 +478,8 @@ if __name__ == "__main__":
               f"--drop_the_prompt_in_json_output can be provided. Exiting.")
         exit()
 
+    start_time = time.time()
+    total_tokens = 0
     doc_index = 0
     for one_document_json in input_data_json_list:
         prompt_text = args.prompt_text
@@ -463,25 +490,46 @@ if __name__ == "__main__":
                 print(f"The option --use_json_prompt was provided, but the document JSON lacks a 'prompt' field. "
                       f"Exiting.")
                 exit()
-        document_attributes = get_document_attributes(model, one_document_json['document'].strip(), prompt_text,
-                                                      args.trailing_instruction)
+        document_attributes, num_tokens = get_document_attributes(model, one_document_json['document'].strip(),
+                                                                  prompt_text,
+                                                                  args.trailing_instruction, return_input_length=True)
+        total_tokens += num_tokens
+        group_field_text = ""
+        info_field_text = ""
+        if "group" in one_document_json:
+            group_field_text = one_document_json["group"]
+        if "info" in one_document_json:
+            info_field_text = one_document_json["info"]
         if args.combine_the_prompt_and_document_fields_in_json_output:
             document_text = f"{prompt_text} {one_document_json['document'].strip()}"
-            json_obj = {"id": one_document_json["id"], "label": one_document_json["label"],
-                        "document": document_text[0:kMaxPythonChars].strip(),
-                        "attributes": document_attributes}
+            prompt_text = ""
         elif args.drop_the_prompt_in_json_output:
             document_text = f"{one_document_json['document'].strip()}"
-            json_obj = {"id": one_document_json["id"], "label": one_document_json["label"],
-                        "document": document_text[0:kMaxPythonChars].strip(),
-                        "attributes": document_attributes}
+            prompt_text = ""
         else:
             document_text = f"{one_document_json['document'].strip()}"
-            json_obj = {"id": one_document_json["id"], "label": one_document_json["label"],
-                        "prompt": prompt_text,
-                        "document": document_text[0:kMaxPythonChars].strip(),
-                        "attributes": document_attributes}
+
+        json_obj = construct_minimal_json_object(one_document_json["id"], one_document_json["label"],
+                                                 document_text[0:kMaxPythonChars].strip(),
+                                                 document_attributes, prompt=prompt_text,
+                                                 info=info_field_text, group=group_field_text)
 
         save_by_appending_json_lines(args.output_jsonl_file, [json_obj])
         print(f"Saved document {doc_index} of {len(input_data_json_list)}")
         doc_index += 1
+
+        if doc_index % 100 == 0:
+            elapsed_seconds = time.time() - start_time
+            print(f"Total tokens: {total_tokens}; total documents: {doc_index}")
+            print(f"Elapsed seconds: {elapsed_seconds}")
+            print(f"Tokens per second: {float(total_tokens) / elapsed_seconds}")
+            print(f"Documents per second: {float(doc_index) / elapsed_seconds}")
+            print("-"*60)
+            print("")
+
+    elapsed_seconds = time.time() - start_time
+    print(f"++COMPLETE++")
+    print(f"Total tokens: {total_tokens}; total documents: {doc_index}")
+    print(f"Elapsed seconds: {elapsed_seconds}")
+    print(f"Tokens per second: {float(total_tokens) / elapsed_seconds}")
+    print(f"Documents per second: {float(doc_index) / elapsed_seconds}")

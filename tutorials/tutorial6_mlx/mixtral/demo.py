@@ -20,6 +20,12 @@ local network. To adjust the streamlit settings, please refer to the documentati
 
 Copyright © 2024 Reexpress AI, Inc.
 
+
+Update 2024-02-08:
+Minor: The default "Tutorial" prompts have been changed to the more general re-ask format of Tutorial 7 (see
+prefill_template_with_demo()).
+
+
 """
 
 import streamlit as st
@@ -55,7 +61,7 @@ with st.sidebar:
     generation_mode = st.radio(
         "Mode",
         [kReaskMarker, "Chat"],
-        captions=["Generate attributes for binary Yes/No re-ask (for upload to Reexpress)",
+        captions=["Generate attributes for binary Yes/No re-ask (for import into Reexpress)",
                   "Standard chat for debugging"])
 
     temperature = 0.0
@@ -93,8 +99,11 @@ with st.sidebar:
             st.markdown(f":green[{st.session_state.prompt_text}] DOCUMENT Yes or No?")
 
     def prefill_template_with_demo():
-        st.session_state.prompt_text = "Please classify the sentiment of the following review. Review:"
-        st.session_state.trailing_instruction = "Question: Does the previous document have a positive sentiment?"
+        # switching the default to more general re-ask (as in Tutorial 7)
+        st.session_state.prompt_text = "Given the following document, please answer the question. Document:"
+        st.session_state.trailing_instruction = "Question: Does the previous document contain correct information and is it well-written?"
+        # st.session_state.prompt_text = "Please classify the sentiment of the following review. Review:"
+        # st.session_state.trailing_instruction = "Question: Does the previous document have a positive sentiment?"
 
 
     if is_reask_mode(generation_mode):
