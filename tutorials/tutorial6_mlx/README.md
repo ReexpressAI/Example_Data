@@ -39,7 +39,7 @@ pip install -r mixtral/requirements.txt
 ```
 
 > [!NOTE]
-> MLX was recently released. The code in this tutorial was originally created with version 0.0.10 and has most recently been tested with version 0.0.11. For convenience, we have included a copy of the `mixtral` directory from [https://github.com/ml-explore](https://github.com/ml-explore) as it existed when this tutorial was created. Also in that directory is the new Reexpress support code to run this tutorial.
+> MLX was recently released. The code in this tutorial was originally created with version 0.0.10 and has most recently been tested with version 0.0.11. For convenience, we have included a copy of the `mixtral` directory from [https://github.com/ml-explore](https://github.com/ml-explore) as it existed when this tutorial was created, and we have added versioning to the `requirements.txt` file. Also in that directory is the new Reexpress support code to run this tutorial.
 
 Download the `Mixtral-8x7B-Instruct-v0.1` weights from Hugging Face via git-lfs as described in [mixtral/README.md](mixtral/README.md), which was taken from [https://github.com/ml-explore/mlx-examples/tree/main/llms/mixtral](https://github.com/ml-explore/mlx-examples/tree/main/llms/mixtral). This will create a directory `Mixtral-8x7B-Instruct-v0.1` containing the raw weights (about 195 GB).
 
