@@ -16,8 +16,9 @@ For [Tutorial 6: Combine Reexpress with Mixtral-8x7B via Apple's MLX framework (
 
 For [Tutorial 7: Reexpress is your reliable co-pilot for enterprise and professional AI-augmented data analysis (YouTube)](https://youtu.be/ipSZf3h8vLY) see the [Tutorial 7 Readme](tutorials/tutorial7_factcheck/README.md).
 
-Tutorial 8: Tutorial 8: Assessing Label and Data Quality with Reexpress: Creating Reliable Enterprise Models with Less Data, Faster 
-(**Arriving soon**)
+For "Tutorial 8: Reexpress+GPT-4 unlocks the future potential of AI for legal professionals" see the [Tutorial 8 Readme](tutorials/tutorial8_legalbench/README.md).
+
+
 
 
 These tutorials will help you jump start you data analysis journey, which includes dense (vector) matching, semantic searches, auto visualizations, uncertainty quantification, and more...all without writing a single line of analysis code nor messing with tricky GPU drivers nor sending your data to an external server!
