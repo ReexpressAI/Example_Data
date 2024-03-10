@@ -1,6 +1,6 @@
-# Tutorial 8: Reexpress+GPT-4 unlocks the future potential of AI for legal professionals
+# Tutorial 8: Reexpress+GPT-4 unlocks the potential of AI for legal professionals
 
-[Reexpress](https://re.express/) unlocks the future potential of AI for legal professionals.
+[Reexpress](https://re.express/) unlocks the potential of AI for legal professionals.
 
 ![Reexpress](assets/Reexpress_overview.png)
 
