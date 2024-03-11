@@ -16,13 +16,13 @@ We provide the `.re1` model file with the trained model and data [here](https://
 
 ## LegalBench
 
-LegalBench is a large, publicly available dataset for evaluating the legal reasoning capabilities of LLMs. We focus on the subset of 80 tasks structured as binary classification that also have an MIT or CC BY 4.0 license. We randomly split the data, resulting in a Training set of 11,568 documents; a Calibration set of 19,280 documents; and an Eval set of 7,711 documents.
+LegalBench is a large, publicly available dataset for evaluating the legal reasoning capabilities of LLMs. We focus on the subset of 80 tasks structured as binary classification that also have an MIT or CC BY 4.0 license. In the data fold used below, the data is split with a Training set of 11,568 documents; a Calibration set of 19,280 documents; and an Eval set of 7,711 documents.
 
 ### OpenAI models
 
 We use the base prompt provided in the LegalBench [repo](https://github.com/HazyResearch/legalbench). We run inference using `gpt-4-0125-preview`. Since the documents are much longer than the 512-token limit of the on-device models, we also run the `text-embedding-3-large` model over the input and the single token output (typically 'Yes' or 'No') of `gpt-4-0125-preview`. A simple transformation of the GPT-4 output logits and the embeddings are then combined into 32 floats used as Reexpression attributes attached to each document in the JSON lines file for input into Reexpress.   
 
-See [preprocess/README.md](preprocess/README.md) for how to run inference with the OpenAI models and format the attributes in the JSON lines files. That basic setup can be used for other classification tasks, so you can use that as a starting point for your own data. However, for the purposes of this tutorial, you can skip the preprocessing step, as the preprocessed data with attributes is available for download [here](https://drive.google.com/file/d/1pmQ7eYbjNri-4-MYxHkJZJXAiSZda9v1/view?usp=sharing).
+See [preprocess/README.md](preprocess/README.md) for how to run inference with the OpenAI models and format the attributes in the JSON lines files. That basic setup can be used for other classification tasks, so you can use that as a starting point for your own data. However, for the purposes of this tutorial, you can skip the preprocessing step, as the preprocessed data with attributes is available for download [here](https://drive.google.com/file/d/1_GofjFb8g9sO9iDhgYvh_RS2eorsS_km/view?usp=sharing).
 
 ### Training Reexpress for legal reasoning
 

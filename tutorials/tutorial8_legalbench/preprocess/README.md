@@ -2,7 +2,7 @@
 
 LegalBench is a large, publicly available dataset for evaluating the legal reasoning capabilities of LLMs. We focus on the subset of 80 tasks structured as binary classification (with a "Yes" or "No" answer) that also have an MIT or CC BY 4.0 license. This subset of the data is available [here](https://drive.google.com/file/d/1TnSRMh3dPwJtWxZao5rfYxHZhOGyuLSx/view?usp=sharing), which is the subset of the full data available from the LegalBench [repo](https://github.com/HazyResearch/legalbench). Note that we have formatted the documents using the base prompt from the repo.
 
-The end result of the following will be to produce JSON lines files that contain a vector of 32 elements associated with each document. If you want to skip the following, you can download the data formatted for import into Reexpress [here](https://drive.google.com/file/d/1pmQ7eYbjNri-4-MYxHkJZJXAiSZda9v1/view?usp=sharing).
+The end result of the following will be to produce JSON lines files that contain a vector of 32 elements associated with each document. If you want to skip the following, you can download the data formatted for import into Reexpress, split into a Training, Calibration, and Eval set [here](https://drive.google.com/file/d/1_GofjFb8g9sO9iDhgYvh_RS2eorsS_km/view?usp=sharing). We also provide all of the data by task [here](https://drive.google.com/file/d/1Hs3W_pBFKcfUxV_eLpQrVtChF6f0yshk/view?usp=sharing), as a convenience if you want to examine the behavior of Reexpress on other splits, including distribution shifts by task.
 
 To prepare the data for import into Reexpress, we will:
 - Run inference using `gpt-4-0125-preview` and `text-embedding-3-large`.
@@ -49,7 +49,7 @@ python -u openai_legalbench_split_data_within_task.py \
 --output_jsonl_dir ${OUTPUT_DATA_DIR}
 ```
 
-This data is available [here](https://drive.google.com/file/d/1pmQ7eYbjNri-4-MYxHkJZJXAiSZda9v1/view?usp=sharing), including a label display names file. Alternatively, if you want to examine the behavior of Reexpress on distribution shifts (as in the previous Tutorial), you can use `openai_legalbench_split_data_by_task.py`, which splits the data by task. 
+This data is available via the link above, including a label display names file. Alternatively, if you want to examine the behavior of Reexpress on distribution shifts (as in the previous Tutorial), you can use `openai_legalbench_split_data_by_task.py`, which splits the data by task. 
 
 ## Next
 
