@@ -2,7 +2,7 @@
 # See the Reexpress AI tutorial for usage instructions.
 
 """
-Randomly split the data, regardless of task.
+Split the data, regardless of task.
 """
 
 import argparse
@@ -58,12 +58,23 @@ if __name__ == "__main__":
 
     random.shuffle(all_data)
 
-    # 20% as eval:
+    # (The percentage split in the tutorial is arbitrary, with 20% as eval.
+    # Feel free to experiment with other splits to examine the behavior of Reexpress over varying data size splits.
+    # We include a link to the data in the repo with the attributes. You can also examine the behavior when
+    # splitting by task with openai_legalbench_split_data_by_task.py)
     eval_documents = all_data[0:int(len(all_data)*0.2)]
-    # remaining split 50-50 into train and calibration:
-    remaining_documents = all_data[int(len(all_data)*0.2):]
-    train_documents = all_data[0:int(len(all_data)*0.5)]
+    train_documents = all_data[int(len(all_data)*0.2):int(len(all_data)*0.5)]
     calibration_documents = all_data[int(len(all_data)*0.5):]
+
+    # Reexpress uses the 'id' as the unique key, so there is no chance of overlap in practice after importing
+    # the data. Here we make sure there
+    # is no overlap in case you want to use the files in other contexts:
+    assert len(set([x["id"] for x in eval_documents]) &
+               set([x["id"] for x in train_documents]) &
+               set([x["id"] for x in calibration_documents])) == 0
+    print(f"Eval docs: {len(eval_documents)}")
+    print(f"Train docs: {len(train_documents)}")
+    print(f"Calibration docs: {len(calibration_documents)}")
 
     save_json_lines(os.path.join(args.output_jsonl_dir, f'eval.legalbench.jsonl'), eval_documents)
     save_json_lines(os.path.join(args.output_jsonl_dir, f'train.legalbench.jsonl'), train_documents)
