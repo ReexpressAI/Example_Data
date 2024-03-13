@@ -9,7 +9,7 @@ As we saw in Tutorial 6, [Reexpress](https://re.express/) can be used to add unc
 
 Recent academic work ([[1], [2], inter alia.](#references)) has sought to extract latent signals within parametric neural networks that are correlated with truthfulness. The goal is to construct a semi- or distantly-supervised classifier over these signals for use in reducing hallucinations and other errors from large language models. The methods are premised on the idea that large networks encode signals for binary truthfulness in their hidden states, and these latent signals can be extracted via a transform of the hidden states.
 
-**In fact, the older idea that is Reexpress is more powerful and general than this.** Reexpress is premised on our older and more general result that parametric neural networks can be closely approximated as a transformation of their hidden states over the observed training data. Reexpress takes this line of work to its logical conclusion: By reexpressing a model (or a composition of models, as we'll do in this tutorial) as a direct connection between the observed training and calibration sets, we can add the missing properties needed to use neural networks in practice:
+**In fact, the older idea that is Reexpress is more powerful and general than this.** Reexpress is premised on the older and more general result that parametric neural networks can be closely approximated as a transformation of their hidden states over the observed training data [3]. Reexpress takes this line of work to its logical conclusion: By reexpressing a model (or a composition of models, as we'll do in this tutorial) as a direct connection between the observed training and calibration sets, we can add the missing properties needed to use neural networks in practice:
 
 - Introspection
   - Interpretability by example/exemplar: The parameters of the network(s) are non-identifiable, but we can relate predictions to instances with known labels in feature space. 
@@ -113,3 +113,5 @@ In this tutorial, we've used a simplified version of the more general task of de
 [1] Azaria and Mitchell. 2023. "The Internal State of an LLM Knows When It’s Lying". [https://arxiv.org/abs/2304.13734](https://arxiv.org/abs/2304.13734)
 
 [2] Burns et al. 2022. "Discovering Latent Knowledge in Language Models Without Supervision". [https://arxiv.org/abs/2212.03827](https://arxiv.org/abs/2212.03827)
+
+[3] Schmaltz. 2021. "Detecting local insights from global labels: Supervised and zero-shot sequence labeling via a convolutional decomposition". *Computational Linguistics*, 47(4):729–773. [https://doi.org/10.1162/coli_a_00416](https://doi.org/10.1162/coli_a_00416)
